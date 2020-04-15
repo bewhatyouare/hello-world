@@ -10,7 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-
+const WorkboxPlugin = require('workbox-webpack-plugin');
 const env = require('../config/prod.env')
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -74,7 +74,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency',
       // 每个html引用的js模块，也可以在这里加上vendor等公用模块
-      chunks: [name,'manifest', 'vendor']
+      chunks: ['manifest', 'vendor']
     }),
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
@@ -117,7 +117,28 @@ const webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    /*
+       这里也可以使用 WorkboxPlugin.InjectManifest({}) 配置
+       但是需要 配置 swSrc 指明模板 service-worker 文件
+       WorkboxPlugin.GenerateSW({}) 可以直接生成 service-worker 文件
+     */
+   new WorkboxPlugin.GenerateSW({
+     importWorkboxFrom:'local',
+     cacheId: 'webpack-pwa', // 设置前缀
+     skipWaiting: true, // 强制等待中的 Service Worker 被激活
+     clientsClaim: true, // Service Worker 被激活后使其立即获得页面控制权
+     swDest: 'service-wroker.js', // 输出 Service worker 文件
+     globPatterns: ['**/*.{html,js,css,png.jpg}'], // 匹配的文件
+     globIgnores: ['service-wroker.js'], // 忽略的文件
+     runtimeCaching: [
+         // 配置路由请求缓存
+         {
+             urlPattern: /.*\.js/, // 匹配文件
+             handler: 'networkFirst' // 网络优先
+         }
+     ]
+   })
   ]
 })
 
