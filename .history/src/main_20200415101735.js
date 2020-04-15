@@ -1,9 +1,7 @@
 
 import Vue from 'vue'
 import App from './App'
-import GenerateSW from 'workbox-webpack-plugin';
 
-new GenerateSW()
 const install = function(Vue, config = {}) {
   if (install.installed) return;
   Vue.config.productionTip = false;
@@ -12,6 +10,7 @@ const install = function(Vue, config = {}) {
 }
 // auto install
 if (typeof window !== 'undefined' && window.Vue) {
+  Console.info(window.Vue);
   install(window.Vue);
 };
 /* eslint-disable no-new */

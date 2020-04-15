@@ -23,7 +23,7 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   externals: {
-    vue: 'Vue'
+    vue: 'window.Vue'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],

@@ -1,9 +1,7 @@
 
 import Vue from 'vue'
 import App from './App'
-import GenerateSW from 'workbox-webpack-plugin';
 
-new GenerateSW()
 const install = function(Vue, config = {}) {
   if (install.installed) return;
   Vue.config.productionTip = false;

@@ -1,15 +1,15 @@
 
 import Vue from 'vue'
 import App from './App'
-import GenerateSW from 'workbox-webpack-plugin';
 
-new GenerateSW()
 const install = function(Vue, config = {}) {
+  console.info(Vue);
   if (install.installed) return;
   Vue.config.productionTip = false;
   Vue.config.devtools = true;
 
 }
+console.info(window.Vue);
 // auto install
 if (typeof window !== 'undefined' && window.Vue) {
   install(window.Vue);

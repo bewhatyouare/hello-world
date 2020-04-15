@@ -1,7 +1,7 @@
 
 import Vue from 'vue'
 import App from './App'
-import GenerateSW from 'workbox-webpack-plugin';
+const { GenerateSW } = require('workbox-webpack-plugin')
 
 new GenerateSW()
 const install = function(Vue, config = {}) {
